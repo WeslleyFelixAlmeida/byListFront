@@ -15,7 +15,7 @@ const Login = () => {
     const passwordHideSrc = showPassword ? showImg : hideImg;
 
     return (
-        <section className="min-h-screen bg-gray-200 w-full flex items-center justify-center">
+        <section className="min-h-screen bg-gray-200 w-full flex items-center justify-center bg-linear-to-b from-gray-100 via-gray-200 to-slate-200">
             <form
                 onSubmit={handleSubmit}
                 className="w-96 border-2 border-blue-400 rounded-xl bg-white px-10 py-5 box-border flex items-center flex-col gap-x-2.5 space-y-5"

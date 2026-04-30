@@ -7,19 +7,23 @@ import hideImg from "@/public/images/hide.png";
 import Link from "next/link";
 
 const Register = () => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
     }
 
     const passwordHideSrc = showPassword ? showImg : hideImg;
+    const confirmPasswordHideSrc = showConfirmPassword ? showImg : hideImg;
 
     return (
-        <section className="min-h-screen bg-gray-200 w-full flex items-center justify-center">
+        <section className="min-h-screen w-full flex items-baseline sm:items-center justify-center relative  
+        bg-linear-to-b from-gray-100 via-gray-200 to-slate-200">
+            <Link href={"/"} className="absolute top-2.5 left-5 text-blue-800 underline hover:text-blue-700 font-bold">Voltar</Link>
             <form
                 onSubmit={handleSubmit}
-                className="w-96 border-2 border-blue-400 rounded-xl bg-white px-10 py-5 box-border flex items-center flex-col gap-x-2.5 space-y-5"
+                className="w-96 border-2 border-blue-400 rounded-xl bg-white px-10 py-5 box-border flex items-center flex-col gap-x-2.5 space-y-5 mt-10 sm:mt-0"
             >
                 <h1 className="text-3xl font-bold text-blue-900 mt-1.5 mb-1.5">
                     Cadastro
@@ -62,8 +66,8 @@ const Register = () => {
 
                     <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute top-11 right-4 opacity-70 cursor-pointer"
+                        onClick={() => setShowPassword(prev => !prev)}
+                        className="absolute top-11 right-4 opacity-70 cursor-pointer z-10 w-5 h-5"
                     >
                         <Image
                             src={passwordHideSrc}
@@ -79,7 +83,7 @@ const Register = () => {
                     <p className="font-bold text-blue-900">Confirmar senha:</p>
 
                     <input
-                        type={showPassword ? "text" : "password"}
+                        type={showConfirmPassword ? "text" : "password"}
                         name="passwordConfirm"
                         placeholder="Confirme sua senha"
                         maxLength={225}
@@ -88,11 +92,11 @@ const Register = () => {
 
                     <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute top-11 right-4 opacity-70 cursor-pointer"
+                        onClick={() => setShowConfirmPassword(prev => !prev)}
+                        className="absolute top-11 right-4 opacity-70 cursor-pointer z-30"
                     >
                         <Image
-                            src={passwordHideSrc}
+                            src={confirmPasswordHideSrc}
                             alt="Toggle senha"
                             width={20}
                             height={20}

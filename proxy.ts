@@ -18,27 +18,27 @@ export function proxy(request: NextRequest) {
   const public_route = public_routes.find((route) => route.path === path);
   const auth_token = request.cookies.get("auth_token");
 
-  if (!auth_token && public_route) {
-    return NextResponse.next();
-  }
+  // if (!auth_token && public_route) {
+  //   return NextResponse.next();
+  // }
 
-  if (!auth_token && !public_route) {
-    const redirect_url = request.nextUrl.clone();
-    redirect_url.pathname = redirect_not_authenticated;
+  // if (!auth_token && !public_route) {
+  //   const redirect_url = request.nextUrl.clone();
+  //   redirect_url.pathname = redirect_not_authenticated;
 
-    return NextResponse.redirect(redirect_url);
-  }
+  //   return NextResponse.redirect(redirect_url);
+  // }
 
-  if (auth_token && public_route?.ifAuthenticated === "redirect") {
-    const redirect_url = request.nextUrl.clone();
-    redirect_url.pathname = "/profile";
+  // if (auth_token && public_route?.ifAuthenticated === "redirect") {
+  //   const redirect_url = request.nextUrl.clone();
+  //   redirect_url.pathname = "/profile";
 
-    return NextResponse.redirect(redirect_url);
-  }
+  //   return NextResponse.redirect(redirect_url);
+  // }
 
-  if (auth_token && !public_route) {
-    return NextResponse.next();
-  }
+  // if (auth_token && !public_route) {
+  //   return NextResponse.next();
+  // }
 
   return NextResponse.next();
 }
