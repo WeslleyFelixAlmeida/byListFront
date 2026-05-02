@@ -12,14 +12,16 @@ import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { IoIosLock } from "react-icons/io";
 import { MdExitToApp } from "react-icons/md";
+import ExitBox from "@/components/profile/exitBox";
 
 
 const Profile = () => {
     const [userData, setUserData] = useState();//Essa variável deve ser mandada para as páginas home, privacidade e perfil
     const [showLeftSide, setShowLeftSide] = useState<boolean>(!false);
     const [currentPage, setCurrentPage] = useState<"profile" | "privacy" | "home">("home");
-    const showStyle = "w-1/5";
-    const hideStyle = "w-16";
+    const [showExitBox, setShowExitBox] = useState<boolean>(false);
+    const showStyle = "w-1/5 min-w-3xs";
+    const hideStyle = "w-16 min-w-11";
 
     const toggleLeftSideSize = () => {
         if (showLeftSide) {
@@ -30,8 +32,10 @@ const Profile = () => {
 
     return (
         <section className="h-dvh bg-white bg-linear-to-t from-gray-100 via-gray-200 to-slate-200 flex relative">
+            {showExitBox && <ExitBox hideBox={setShowExitBox} />}
             <div className={`${showLeftSide ? showStyle : hideStyle} 
-                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 bg-gray-50 border-r border-blue-500 transition-[width] duration-800 absolute h-full overflow-hidden`}>
+                
+                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 bg-gray-50 border-r border-blue-500 transition-[width, min-width] duration-800 absolute h-full overflow-hidden`}>
                 <button
                     onClick={toggleLeftSideSize}
                     className={`cursor-pointer rounded-3xl flex items-center gap-x-2.5 self-end transition-[padding] duration-800 mr-1
@@ -105,14 +109,14 @@ const Profile = () => {
                 {/* Botão 4 */}
                 {showLeftSide &&
                     <button
-                        onClick={() => console.log("SAIU")}
+                        onClick={() => setShowExitBox(true)}
                         className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-3xs`}>
                         <MdExitToApp className="text-blue-400 text-3xl rounded-4xl border-blue-400 rotate-180" />
                         <p className="mt-0.5">Sair</p>
                     </button>}
                 {!showLeftSide &&
                     <button
-                        onClick={() => console.log("SAIU")}
+                        onClick={() => setShowExitBox(true)}
                         className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 justify-center`}>
                         <MdExitToApp className="text-blue-400 text-3xl rounded-4xl border-blue-400 rotate-180" />
                     </button>
