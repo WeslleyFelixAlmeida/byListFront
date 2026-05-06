@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Home from "@/app/page";
 import Privacy from "@/components/profile/privacy";
 import PersonalProfile from "@/components/profile/personalProfile";
@@ -12,57 +11,67 @@ import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { IoIosLock } from "react-icons/io";
 import { MdExitToApp } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 import ExitBox from "@/components/profile/exitBox";
 
-
 const Profile = () => {
-    const [userData, setUserData] = useState();//Essa variável deve ser mandada para as páginas home, privacidade e perfil
-    const [showLeftSide, setShowLeftSide] = useState<boolean>(!false);
+    const [userData, setUserData] = useState();
+    const [showLeftSide, setShowLeftSide] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<"profile" | "privacy" | "home">("home");
     const [showExitBox, setShowExitBox] = useState<boolean>(false);
-    const showStyle = "w-1/5 min-w-3xs";
-    const hideStyle = "w-16 min-w-11";
+
+    const showStyle = "w-1/5 min-w-3xs h-full";
+    const hideStyle = "w-16 min-w-11 h-16";
 
     const toggleLeftSideSize = () => {
-        if (showLeftSide) {
-            return setShowLeftSide(prev => !prev);
-        }
         setShowLeftSide(prev => !prev);
-    }
+    };
 
     return (
-        <section className="h-dvh bg-white bg-linear-to-t from-gray-100 via-gray-200 to-slate-200 flex relative">
+        <section className="h-dvh bg-white bg-linear-to-t from-gray-100 via-gray-200 to-slate-200 flex relative min-h-200">
             {showExitBox && <ExitBox hideBox={setShowExitBox} />}
+
             <div className={`${showLeftSide ? showStyle : hideStyle} 
-                
-                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 bg-gray-50 border-r border-blue-500 transition-[width, min-width] duration-800 absolute h-full overflow-hidden`}>
+                ${showLeftSide ? "border-b border-r bg-gray-50" : "bg-white"} 
+                sm:border-b-0 sm:border-r border-blue-500 
+                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 sm:bg-gray-50 transition-[width, min-width] duration-800 absolute -top-16 sm:top-0 overflow-hidden sm:h-full`}>
                 <button
                     onClick={toggleLeftSideSize}
-                    className={`cursor-pointer rounded-3xl flex items-center gap-x-2.5 self-end transition-[padding] duration-800 mr-1
-                    `}
-                >
-                    {!showLeftSide &&
-                        <FaRegArrowAltCircleRight className="text-blue-400 text-4xl rounded-4xl border-blue-400" />}
-                    {showLeftSide &&
-                        <FaRegArrowAltCircleLeft className="text-blue-400 text-4xl rounded-4xl border-blue-400" />}
+                    className="sm:hidden flex items-center self-end transition-[padding] duration-800 mr-1.5 mt-1 mb-9">
+                    <GiHamburgerMenu className="text-blue-400 text-3xl" />
                 </button>
+
+                <button
+                    onClick={toggleLeftSideSize}
+                    className="cursor-pointer rounded-3xl hidden sm:flex items-center self-end transition-[padding] duration-800 mr-1">
+                    {!showLeftSide &&
+                        <FaRegArrowAltCircleRight className="text-blue-400 text-4xl" />
+                    }
+                    {showLeftSide &&
+                        <FaRegArrowAltCircleLeft className="text-blue-400 text-4xl" />
+                    }
+                </button>
+
                 {/* Botão 1 */}
                 {showLeftSide &&
                     <button
                         onClick={() => setCurrentPage("home")}
-                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-3xs
-                     ${currentPage === "home" ? "bg-blue-100" : ""}
-                    `}>
-                        <IoMdHome className="text-blue-400 text-3xl rounded-4xl border-blue-400" />
+                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-full
+                        ${currentPage === "home" ? "bg-blue-100" : ""}`}>
+                        <p className="w-8">
+                            <IoMdHome className="text-blue-400 text-3xl" />
+                        </p>
                         <p className="mt-0.5">Home</p>
                     </button>}
                 {!showLeftSide &&
                     <button
                         onClick={() => setCurrentPage("home")}
                         className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 justify-center
-                    ${currentPage === "home" ? "bg-blue-100" : ""}
-                    `}>
-                        <IoMdHome className="text-blue-400 text-3xl rounded-4xl border-blue-400" />
+                        ${currentPage === "home" ? "bg-blue-100" : ""}`}>
+                        <p className="w-8">
+                            <IoMdHome className="text-blue-400 text-3xl" />
+                        </p>
                     </button>
                 }
 
@@ -70,19 +79,21 @@ const Profile = () => {
                 {showLeftSide &&
                     <button
                         onClick={() => setCurrentPage("profile")}
-                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-3xs
-                     ${currentPage === "profile" ? "bg-blue-100" : ""}
-                    `}>
-                        <CgProfile className="text-blue-400 text-3xl rounded-4xl border-blue-400" />
+                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-full
+                        ${currentPage === "profile" ? "bg-blue-100" : ""}`}>
+                        <p className="w-8">
+                            <CgProfile className="text-blue-400 text-3xl" />
+                        </p>
                         <p className="mt-0.5">Perfil</p>
                     </button>}
                 {!showLeftSide &&
                     <button
                         onClick={() => setCurrentPage("profile")}
                         className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 justify-center
-                    ${currentPage === "profile" ? "bg-blue-100" : ""}
-                    `}>
-                        <CgProfile className="text-blue-400 text-3xl rounded-4xl border-blue-400" />
+                        ${currentPage === "profile" ? "bg-blue-100" : ""}`}>
+                        <p className="w-8">
+                            <CgProfile className="text-blue-400 text-3xl" />
+                        </p>
                     </button>
                 }
 
@@ -90,19 +101,21 @@ const Profile = () => {
                 {showLeftSide &&
                     <button
                         onClick={() => setCurrentPage("privacy")}
-                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-3xs
-                     ${currentPage === "privacy" ? "bg-blue-100" : ""}
-                    `}>
-                        <IoIosLock className="text-blue-400 text-3xl rounded-4xl border-blue-400" />
+                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-full
+                        ${currentPage === "privacy" ? "bg-blue-100" : ""}`}>
+                        <p className="w-8">
+                            <IoIosLock className="text-blue-400 text-3xl" />
+                        </p>
                         <p className="mt-0.5">Privacidade</p>
                     </button>}
                 {!showLeftSide &&
                     <button
                         onClick={() => setCurrentPage("privacy")}
                         className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 justify-center
-                    ${currentPage === "privacy" ? "bg-blue-100" : ""}
-                    `}>
-                        <IoIosLock className="text-blue-400 text-3xl rounded-4xl border-blue-400" />
+                        ${currentPage === "privacy" ? "bg-blue-100" : ""}`}>
+                        <p className="w-8">
+                            <IoIosLock className="text-blue-400 text-3xl" />
+                        </p>
                     </button>
                 }
 
@@ -110,25 +123,30 @@ const Profile = () => {
                 {showLeftSide &&
                     <button
                         onClick={() => setShowExitBox(true)}
-                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-3xs`}>
-                        <MdExitToApp className="text-blue-400 text-3xl rounded-4xl border-blue-400 rotate-180" />
+                        className="h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 px-2.5 w-full">
+                        <p className="w-8">
+                            <MdExitToApp className="text-blue-400 text-3xl rotate-180" />
+                        </p>
                         <p className="mt-0.5">Sair</p>
                     </button>}
                 {!showLeftSide &&
                     <button
                         onClick={() => setShowExitBox(true)}
-                        className={`h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 justify-center`}>
-                        <MdExitToApp className="text-blue-400 text-3xl rounded-4xl border-blue-400 rotate-180" />
+                        className="h-11 cursor-pointer rounded-3xl flex items-center gap-x-2.5 justify-center">
+                        <p className="w-8">
+                            <MdExitToApp className="text-blue-400 text-3xl rotate-180" />
+                        </p>
                     </button>
                 }
             </div>
-            <div className="bg-green-400 w-full pl-16 flex items-center justify-center">
+
+            <div className="w-full sm:pl-16 flex items-center justify-center">
                 {currentPage === "home" && <Home />}
                 {currentPage === "privacy" && <Privacy />}
                 {currentPage === "profile" && <PersonalProfile />}
             </div>
-        </section >
-    )
-}
+        </section>
+    );
+};
 
 export default Profile;
