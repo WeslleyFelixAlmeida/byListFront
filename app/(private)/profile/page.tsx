@@ -35,7 +35,7 @@ const Profile = () => {
             <div className={`${showLeftSide ? showStyle : hideStyle} 
                 ${showLeftSide ? "border-b border-r bg-gray-50" : "bg-white"} 
                 sm:border-b-0 sm:border-r border-blue-500 
-                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 sm:bg-gray-50 transition-[width, min-width] duration-800 absolute -top-16 sm:top-0 overflow-hidden sm:h-full`}>
+                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 sm:bg-gray-50 transition-[width, min-width] duration-800 absolute -top-16 sm:top-0 overflow-hidden sm:h-full z-10`}>
                 <button
                     onClick={toggleLeftSideSize}
                     className="sm:hidden flex items-center self-end transition-[padding] duration-800 mr-1.5 mt-1 mb-9">
@@ -140,7 +140,7 @@ const Profile = () => {
                 }
             </div>
 
-            <div className="w-full sm:pl-16 flex items-center justify-center">
+            <div className="w-full sm:pl-16 flex items-center justify-center" onClick={toggleLeftSideSize}>
                 {currentPage === "home" && <Home />}
                 {currentPage === "privacy" && <Privacy />}
                 {currentPage === "profile" && <PersonalProfile />}
