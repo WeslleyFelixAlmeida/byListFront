@@ -140,7 +140,7 @@ const Profile = () => {
                 }
             </div>
 
-            <div className="w-full sm:pl-16 flex items-center justify-center" onClick={toggleLeftSideSize}>
+            <div className="w-full sm:pl-16 flex items-center justify-center" onClick={() => { showLeftSide ? setShowLeftSide(prev => !prev) : "" }}>
                 {currentPage === "home" && <Home />}
                 {currentPage === "privacy" && <Privacy />}
                 {currentPage === "profile" && <PersonalProfile />}
