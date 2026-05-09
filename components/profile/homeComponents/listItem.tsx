@@ -33,11 +33,11 @@ const ListItem = (props: ListItemProps) => {
             </div>
             <div className="flex items-center gap-x-2.5">
                 <div className="flex items-center gap-x-2.5">
-                    <button className="bg-white border border-blue-500 text-blue-500 w-10 h-10 rounded-xl text-2xl cursor-pointer hover:bg-indigo-100 transition[background-color] duration-500" onClick={decreaseAmount}>-</button>
+                    <button className="bg-white border border-blue-500 text-blue-500 w-10 h-10 rounded-xl text-2xl cursor-pointer hover:bg-indigo-100 transition-[background-color] duration-500" onClick={decreaseAmount}>-</button>
                     <p className="text-blue-950 border border-blue-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold box-border pt-0.5">{amount}</p>
-                    <button className="bg-white border border-blue-500 text-blue-500 w-10 h-10 rounded-xl text-2xl cursor-pointer hover:bg-indigo-100 transition[background-color] duration-500" onClick={increaseAmount}>+</button>
+                    <button className="bg-white border border-blue-500 text-blue-500 w-10 h-10 rounded-xl text-2xl cursor-pointer hover:bg-indigo-100 transition-[background-color] duration-500" onClick={increaseAmount}>+</button>
                 </div>
-                <button className="bg-red-500 text-white w-10 h-10 rounded-xl text-2xl cursor-pointer hover:bg-red-600 transition[background-color] duration-500 flex items-center justify-center" onClick={() => props.removeItem({ id: props.id })}><FaRegTrashAlt /></button>
+                <button className="bg-red-500 text-white w-10 h-10 rounded-xl text-2xl cursor-pointer hover:bg-red-600 transition-[background-color] duration-500 flex items-center justify-center" onClick={() => props.removeItem({ id: props.id })}><FaRegTrashAlt /></button>
             </div>
         </li>
     )

@@ -1,5 +1,7 @@
+"use client"
 import logo from "@/public/images/icon.png";
 import Image from "next/image";
+
 
 const Header = () => {
     return (
