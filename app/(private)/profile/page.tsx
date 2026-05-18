@@ -3,7 +3,7 @@
 import Privacy from "@/components/profile/privacy";
 import PersonalProfile from "@/components/profile/personalProfile";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdHome } from "react-icons/io";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
@@ -15,11 +15,14 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import ExitBox from "@/components/profile/exitBox";
 import BuyList from "@/components/profile/buyList";
 import type { User } from "@/types/userType";
+import { NEXT_API_URL } from "@/utils/apiURL";
+import { useRouter } from "next/navigation";
 
 const Profile = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>({
-    id: 1,
-    username: "Usuário 1",
+    name: "",
+    email: "",
   });
 
   const [showLeftSide, setShowLeftSide] = useState<boolean>(false);
@@ -27,6 +30,9 @@ const Profile = () => {
     "profile" | "privacy" | "buyList"
   >("buyList");
   const [showExitBox, setShowExitBox] = useState<boolean>(false);
+
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
 
   const showStyle = "w-1/5 min-w-3xs h-full";
   const hideStyle = "w-16 min-w-11 h-16";
@@ -51,9 +57,77 @@ const Profile = () => {
     setShowLeftSide(false);
   };
 
+  const exit = async () => {
+    const request = await fetch(`${NEXT_API_URL}/user/logout`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!request.ok) {
+      setErrorMessage(true);
+    }
+
+    router.push("/profile");
+  };
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        setIsLoading(true);
+        const request = await fetch(`${NEXT_API_URL}/user`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (request.status === 401) {
+          router.push("/refresh_auth?redirect=/profile");
+
+          return;
+        }
+        if (!request.ok) {
+          router.push("/login");
+        }
+
+        const userData = await request.json();
+        console.log(userData);
+        setUserData(userData);
+      } catch (error) {
+        router.push("/login");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => setErrorMessage(false), 3000);
+    }
+  }, [errorMessage]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
   return (
     <section className="h-dvh bg-white bg-linear-to-t from-gray-100 via-gray-200 to-slate-200 flex relative min-h-200">
-      {showExitBox && <ExitBox hideBox={setShowExitBox} />}
+      {showExitBox && (
+        <ExitBox
+          hideBox={setShowExitBox}
+          exit={exit}
+        />
+      )}
+
+      {errorMessage && (
+        <div className="w-100 h-14 bg-red-400 text-white rounded-xl border-red-700 absolute top-2.5 left-1/2 -translate-x-1/2 flex items-center justify-center font-bold">
+          <p>Ocorreu um erro ao realizar operação.</p>
+        </div>
+      )}
 
       <div
         className={`${showLeftSide ? showStyle : hideStyle} 
@@ -185,11 +259,11 @@ const Profile = () => {
           showLeftSide ? setShowLeftSide((prev) => !prev) : "";
         }}
       >
-        {currentPage === "buyList" && <BuyList id={userData.id} />}
+        {currentPage === "buyList" && <BuyList />}
         {currentPage === "privacy" && (
           <Privacy
-            username={userData.username}
-            id={userData.id}
+            name={userData.name}
+            email={userData.email}
           />
         )}
         {currentPage === "profile" && (

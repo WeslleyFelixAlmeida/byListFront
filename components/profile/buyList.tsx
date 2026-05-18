@@ -11,7 +11,7 @@ type ItemType = {
   id: number;
 };
 
-export default function BuyList(props: Pick<User, "id">) {
+export default function BuyList() {
   const [items, setItems] = useState<ItemType[]>(data);
   const [showAddItemBox, setShowAddItemBox] = useState<boolean>(false);
   const [newItem, setNewItem] = useState<Omit<ItemType, "id">>({

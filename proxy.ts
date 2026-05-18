@@ -9,36 +9,42 @@ const public_routes: Public_route_type[] = [
   { path: "/", ifAuthenticated: "next" },
   { path: "/login", ifAuthenticated: "redirect" },
   { path: "/register", ifAuthenticated: "redirect" },
+  {
+    path: "/refresh_auth",
+    ifAuthenticated: "next",
+  },
 ];
 
-const redirect_not_authenticated = "/login";
+const redirect_not_authenticated = "/refresh_auth";
 
 export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const public_route = public_routes.find((route) => route.path === path);
   const auth_token = request.cookies.get("auth_token");
 
-  // if (!auth_token && public_route) {
-  //   return NextResponse.next();
-  // }
+  if (!auth_token && public_route) {
+    return NextResponse.next();
+  }
 
-  // if (!auth_token && !public_route) {
-  //   const redirect_url = request.nextUrl.clone();
-  //   redirect_url.pathname = redirect_not_authenticated;
+  if (!auth_token && !public_route) {
+    const redirect_url = request.nextUrl.clone();
+    redirect_url.pathname = redirect_not_authenticated;
 
-  //   return NextResponse.redirect(redirect_url);
-  // }
+    redirect_url.searchParams.set("redirect", path);
 
-  // if (auth_token && public_route?.ifAuthenticated === "redirect") {
-  //   const redirect_url = request.nextUrl.clone();
-  //   redirect_url.pathname = "/profile";
+    return NextResponse.redirect(redirect_url);
+  }
 
-  //   return NextResponse.redirect(redirect_url);
-  // }
+  if (auth_token && public_route?.ifAuthenticated === "redirect") {
+    const redirect_url = request.nextUrl.clone();
+    redirect_url.pathname = "/profile";
 
-  // if (auth_token && !public_route) {
-  //   return NextResponse.next();
-  // }
+    return NextResponse.redirect(redirect_url);
+  }
+
+  if (auth_token && !public_route) {
+    return NextResponse.next();
+  }
 
   return NextResponse.next();
 }
