@@ -11,10 +11,10 @@ const PersonalProfile = (props: PersonalProfileProps) => {
   const changePage = props.changePage;
   return (
     <div className="text-blue-900 flex flex-col gap-y-5 w-full max-w-4xl h-full items-center p-15">
-      <h1 className="text-3xl font-bold">Olá, {user.username}</h1>
+      <h1 className="text-3xl font-bold">Olá, {user.name}</h1>
       <p className="text-xl mt-5">Veja as informações do seu perfil</p>
       <CgProfile className="text-[150px]" />
-      <h2 className="text-3xl font-bold">{user.username}</h2>
+      <h2 className="text-3xl font-bold">{user.name}</h2>
       <p className="text-xl self-start font-bold mt-5">
         Acesse e altere informações:
       </p>

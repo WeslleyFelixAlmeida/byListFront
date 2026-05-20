@@ -17,6 +17,7 @@ import BuyList from "@/components/profile/buyList";
 import type { User } from "@/types/userType";
 import { NEXT_API_URL } from "@/utils/apiURL";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/loading";
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,10 +65,10 @@ const Profile = () => {
     });
 
     if (!request.ok) {
-      setErrorMessage(true);
+      return setErrorMessage(true);
     }
 
-    router.push("/profile");
+    router.push("/login");
   };
 
   useEffect(() => {
@@ -89,7 +90,7 @@ const Profile = () => {
         }
 
         const userData = await request.json();
-        console.log(userData);
+
         setUserData(userData);
       } catch (error) {
         router.push("/login");
@@ -107,11 +108,7 @@ const Profile = () => {
   }, [errorMessage]);
 
   if (isLoading) {
-    return (
-      <div>
-        <p>Carregando...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
