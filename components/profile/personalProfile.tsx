@@ -2,13 +2,14 @@ import { CgProfile } from "react-icons/cg";
 import type { User } from "@/types/userType";
 
 type PersonalProfileProps = {
-  user: User;
+  user: Pick<User, "name">;
   changePage: Function;
 };
 
 const PersonalProfile = (props: PersonalProfileProps) => {
   const user = props.user;
   const changePage = props.changePage;
+
   return (
     <div className="text-blue-900 flex flex-col gap-y-5 w-full max-w-4xl h-full items-center p-15">
       <h1 className="text-3xl font-bold">Olá, {user.name}</h1>

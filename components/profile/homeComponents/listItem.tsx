@@ -229,7 +229,7 @@ const ListItem = (props: ListItemProps) => {
 
       {isEditingAmount && !isEditingItemName && (
         <div className="flex items-baseline lg:items-center gap-x-2.5 w-full flex-col gap-y-2.5 lg:flex-row relative">
-          <p className="font-bold text-blue-950">Nova quantidade:</p>
+          <p className="font-bold text-blue-900">Nova quantidade:</p>
           <input
             type="text"
             name="newAmount"

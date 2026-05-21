@@ -90,8 +90,7 @@ const Profile = () => {
         }
 
         const userData = await request.json();
-
-        setUserData(userData);
+        setUserData(userData.data);
       } catch (error) {
         router.push("/login");
       } finally {
@@ -112,7 +111,7 @@ const Profile = () => {
   }
 
   return (
-    <section className="h-dvh bg-white bg-linear-to-t from-gray-100 via-gray-200 to-slate-200 flex relative min-h-200">
+    <section className="h-vdh bg-white bg-linear-to-t from-gray-100 via-gray-200 to-slate-200 flex relative min-h-200">
       {showExitBox && (
         <ExitBox
           hideBox={setShowExitBox}
@@ -129,8 +128,8 @@ const Profile = () => {
       <div
         className={`${showLeftSide ? showStyle : hideStyle} 
                 ${showLeftSide ? "border-b border-r bg-gray-50" : "bg-white"} 
-                sm:border-b-0 sm:border-r border-blue-500 
-                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 sm:bg-gray-50 transition-[width, min-width] duration-800 absolute -top-16 sm:top-0 overflow-hidden sm:h-full z-10`}
+                overflow-hidden sm:border-b-0 sm:border-r border-blue-500 
+                text-blue-950 font-bold flex flex-col space-y-2.5 p-2.5 sm:bg-gray-50 transition-[width, min-width] duration-800 absolute -top-16 sm:top-0 sm:h-full z-10`}
       >
         <button
           onClick={toggleLeftSideSize}
@@ -265,7 +264,7 @@ const Profile = () => {
         )}
         {currentPage === "profile" && (
           <PersonalProfile
-            user={userData}
+            user={{ name: userData.name }}
             changePage={changePage}
           />
         )}
