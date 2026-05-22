@@ -25,7 +25,7 @@ const ChangeUsername = (props: ChangeUsernameProps) => {
       const data = await fetch(`${NEXT_API_URL}/user/update/username`, {
         method: "PATCH",
         credentials: "include",
-        body: JSON.stringify({ username: newUsername }),
+        body: JSON.stringify({ newUsername: newUsername }),
         headers: {
           "Content-Type": "application/json",
         },

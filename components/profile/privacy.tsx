@@ -34,7 +34,7 @@ const Privacy = (props: User) => {
       <h1 className="font-bold text-3xl">Altere suas informações:</h1>
 
       {showSuccessMessage && (
-        <div className="font-bold w-60 lg:w-96 border border-green-600 text-white bg-green-400 rounded-xl absolute">
+        <div className="font-bold w-60 lg:w-96 border border-green-600 text-white bg-green-400 rounded-xl absolute p-2.5 left-1/2 -translate-1/2 top-12 flex justify-center items-center text-center">
           <p>Ação realizada com sucesso!</p>
         </div>
       )}

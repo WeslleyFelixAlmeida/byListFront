@@ -66,7 +66,7 @@ const ChangePassword = (props: ChangePasswordProps) => {
     try {
       const passwordsSchema = z.object({
         newPassword: z.string().min(5).max(225),
-        oldPassword: z.string().min(5).max(225),
+        oldPassword: z.string().min(1).max(225),
       });
 
       passwordsSchema.parse({

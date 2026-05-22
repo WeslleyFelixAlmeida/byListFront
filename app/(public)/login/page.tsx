@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import showImg from "@/public/images/show.png";
 import hideImg from "@/public/images/hide.png";
 import Link from "next/link";
 import { NEXT_API_URL } from "@/utils/apiURL";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { z, ZodError } from "zod";
 import { VscLoading } from "react-icons/vsc";
 
@@ -17,13 +17,25 @@ const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
+
   const [alertMessageWrongData, setAlertMessageWrongData] =
     useState<boolean>(false);
+
+  const [deleteAccountMessage, setDeleteAccountMessage] =
+    useState<boolean>(false);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const hasHandledDeleteMessage = useRef(false);
+
   const passwordHideSrc = showPassword ? showImg : hideImg;
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const [isLoading, setIsloading] = useState<boolean>(false);
 
   function handleFormInputs(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,13 +50,17 @@ const Login = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     try {
-      const validation = loginSchema.parse({
+      loginSchema.parse({
         email: email,
         password: password,
       });
 
-      auth({ email: email, password: password });
+      auth({
+        email: email,
+        password: password,
+      });
     } catch (error: any) {
       if (error instanceof ZodError) {
         return setAlertMessageWrongData(true);
@@ -67,6 +83,7 @@ const Login = () => {
     });
 
     if (!request.ok) {
+      setIsloading(false);
       return setErrorMessage(true);
     }
 
@@ -74,22 +91,51 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (errorMessage || alertMessageWrongData) {
+    const deleteAccount = searchParams.get("deleteAccount");
+
+    if (deleteAccount === "true" && !hasHandledDeleteMessage.current) {
+      hasHandledDeleteMessage.current = true;
+
+      setDeleteAccountMessage(true);
+
+      router.replace("/login");
+
+      setTimeout(() => {
+        setDeleteAccountMessage(false);
+      }, 3000);
+    }
+  }, [searchParams, router]);
+
+  useEffect(() => {
+    if (errorMessage) {
       setIsloading(false);
-      setTimeout(() => setErrorMessage(false), 3000);
+
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 3000);
     }
 
     if (alertMessageWrongData) {
       setIsloading(false);
-      setTimeout(() => setAlertMessageWrongData(false), 3000);
+
+      setTimeout(() => {
+        setAlertMessageWrongData(false);
+      }, 3000);
     }
   }, [errorMessage, alertMessageWrongData]);
 
   return (
-    <section className="min-h-screen bg-gray-200 w-full flex items-center justify-center bg-linear-to-b from-gray-100 via-gray-200 to-slate-200">
+    <section className="min-h-screen bg-gray-200 w-full flex items-center justify-center bg-linear-to-b from-gray-100 via-gray-200 to-slate-200 relative">
       <form
         onSubmit={handleSubmit}
-        className={`w-96 border-2 border-blue-400 rounded-xl bg-white px-10 py-5 box-border flex items-center flex-col gap-x-2.5 space-y-5 overflow-hidden ${errorMessage || alertMessageWrongData ? "h-125" : "h-110"} transition-[height, overflow] duration-500`}
+        className={`w-96 border-2 border-blue-400 rounded-xl bg-white px-10 py-5 box-border flex items-center flex-col gap-x-2.5 space-y-5 overflow-hidden transition-[height] duration-500
+          
+          ${
+            errorMessage || alertMessageWrongData || deleteAccountMessage
+              ? "h-125"
+              : "h-110"
+          }
+        `}
       >
         <h1 className="text-3xl font-bold text-blue-900 mt-1.5 mb-1.5">
           Login
@@ -97,6 +143,7 @@ const Login = () => {
 
         <div className="flex flex-col w-full gap-y-2.5">
           <p className="font-bold text-blue-900">E-mail:</p>
+
           <input
             type="email"
             name="email"
@@ -144,9 +191,11 @@ const Login = () => {
               className="cursor-pointer w-full bg-blue-700 p-3 text-white"
             />
           )}
+
           {isLoading && (
             <div className="w-1/2 p-3 text-blue-700 flex items-center justify-center gap-x-2.5 m-auto">
               <p className="font-bold">Aguarde</p>
+
               <VscLoading className="animate-spin text-3xl" />
             </div>
           )}
@@ -164,7 +213,6 @@ const Login = () => {
           <p className="text-sm text-blue-950">
             Esqueceu sua senha?{" "}
             <Link
-              // href={"/password-recover"}
               href={"#"}
               className="text-blue-500 hover:underline"
             >
@@ -172,6 +220,7 @@ const Login = () => {
             </Link>
           </p>
         </div>
+
         {errorMessage && (
           <div className="w-full text-white bg-red-600 rounded-xl p-2.5 text-center">
             <p>Email ou senha incorretos, verifique e tente novamente.</p>
@@ -184,6 +233,11 @@ const Login = () => {
           </div>
         )}
       </form>
+      {deleteAccountMessage && (
+        <div className="w-60 lg:w-80 top-15 text-white bg-green-600 rounded-xl p-2.5 text-center absolute">
+          <p>Conta deletada com sucesso!</p>
+        </div>
+      )}
     </section>
   );
 };
